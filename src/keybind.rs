@@ -1,8 +1,5 @@
 use crate::Bind;
-use egui::{
-    pos2, vec2, Event, Id, Key, KeyboardShortcut, ModifierNames, PointerButton, RichText, Sense,
-    TextStyle, Ui, Widget, WidgetInfo, WidgetText, WidgetType,
-};
+use egui::{pos2, vec2, Event, Id, Key, KeyboardShortcut, ModifierNames, PointerButton, RichText, Sense, TextStyle, TextWrapMode, Ui, Widget, WidgetInfo, WidgetText, WidgetType};
 
 /// A keybind (hotkey) widget for [egui].
 pub struct Keybind<'a, B: Bind> {
@@ -108,7 +105,7 @@ impl<'a, B: Bind> Widget for Keybind<'a, B> {
 
         let galley = WidgetText::RichText(RichText::new(text.clone())).into_galley(
             ui,
-            Some(false),
+            Some(TextWrapMode::Extend),
             0.0,
             TextStyle::Button,
         );
@@ -122,7 +119,7 @@ impl<'a, B: Bind> Widget for Keybind<'a, B> {
         let text_galley = if !self.text.is_empty() {
             let galley = WidgetText::RichText(RichText::new(self.text)).into_galley(
                 ui,
-                Some(true),
+                Some(TextWrapMode::Extend),
                 ui.available_width() - widget_size.x, // not exactly right
                 TextStyle::Button,
             );
@@ -155,6 +152,7 @@ impl<'a, B: Bind> Widget for Keybind<'a, B> {
             WidgetInfo::selected(
                 WidgetType::Button,
                 expecting,
+                false,
                 if self.text.is_empty() {
                     text.clone() // just read out the hotkey
                 } else {
